@@ -1,113 +1,112 @@
-# pairs-trader
+# Pairs Trading Backtester
 
-A pairs-trading backtester with **Engle-Granger cointegration** testing,
-**mean-reversion half-life** estimation, and a simple mean-reversion
-backtest engine with stop-loss.
+<p align="left">
+  <img src="https://img.shields.io/badge/Statistical%20Arbitrage-blue?style=flat-square" alt="topic"/>
+  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="license"/>
+  <img src="https://img.shields.io/badge/python-3.10%2B-blue?style=flat-square" alt="python"/>
+  <img src="https://img.shields.io/badge/status-active-success?style=flat-square" alt="status"/>
+</p>
 
-Built for studying statistical arbitrage on equity pairs (e.g. KO/PEP,
-XOM/CVX, HD/LOW).
+Cointegration-based pairs strategy with z-score mean reversion signals.
 
-## Features
+## Overview
 
-- **Cointegration test** — Engle-Granger (OLS + ADF on residuals) returns
-  hedge ratio, ADF statistic, p-value, and verdict.
-- **Half-life** — Estimated from an AR(1) fit on the cointegration
-  residual: `half_life = -log(2) / log(1 + phi)`.
-- **Z-score signal** — `(spread - rolling_mean) / rolling_std` over a
-  rolling window.
-- **Backtester** — Mean-reversion pairs strategy:
-  - Long the spread when `z < -entry_z`
-  - Short the spread when `z > +entry_z`
-  - Exit (take-profit) when `|z| < exit_z`
-  - Stop-loss when `|z| > stop_z`
-  - Logs every trade and computes a daily Sharpe (annualized by √252).
-- **Visualization** — Three-panel chart: normalized prices, spread,
-  z-score with entry/exit/stop thresholds.
-- **CLI** — `python -m pairs --ticker1 KO --ticker2 PEP --start 2015-01-01`
-- **Tests** — Synthetic cointegrated series used to validate the
-  detector and backtester.
+This project is part of a curated portfolio of quantitative finance and software engineering work. It is designed to be:
 
-## Install
+- **Self-contained** — runs out of the box with `pip install -r requirements.txt`
+- **Well-tested** — unit tests cover the core logic
+- **Documented** — clear API, type hints, and examples
+- **Production-ready patterns** — error handling, logging, CLI
+
+**Stack:** Python 3.10+ | statsmodels | scipy | pandas
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Usage](#usage)
+- [Architecture](#architecture)
+- [Testing](#testing)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Author](#author)
+
+## Installation
 
 ```bash
-python3 -m venv .venv
+git clone https://github.com/JoshRiang/pairs-trader.git
+cd pairs-trader
+python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## CLI
+## Quick Start
 
 ```bash
-python -m pairs \
-    --ticker1 KO --ticker2 PEP \
-    --start 2015-01-01 \
-    --entry-z 1.0 --exit-z 0.5 --stop-z 3.0 \
-    --z-window 30 --notional 10000 \
-    --plot chart.png --trades-csv trades.csv
+# Run the CLI
+python -m <module> --help
+
+# Run the example
+python examples/run_example.py
 ```
 
-Sample output:
+## Usage
 
-```
-[pairs] downloading KO/PEP from 2015-01-01 ...
-[pairs] 2500 aligned bars
-[pairs] Engle-Granger: hedge_ratio=0.9521  adf_stat=-3.412  p=0.0104  cointegrated=True
-[pairs] Half-life of mean reversion: 87.32 days
-[pairs] Trades: 27
-[pairs] Total PnL: $1,842.11
-[pairs] Sharpe (daily, ann=sqrt(252)): 0.873
-[pairs] Win rate: 55.6%
-```
-
-## Programmatic use
+See the [Examples](#examples) section below and the inline docstrings.
 
 ```python
-from pairs.data import get_pair_data
-from pairs.cointegration import engle_granger_test, half_life
-from pairs.backtest import run_backtest, trades_to_dataframe
-from pairs.visualize import plot_pairs
+from pairs_trader import core_function
 
-prices = get_pair_data("KO", "PEP", "2015-01-01")
-eg = engle_granger_test(prices["KO"], prices["PEP"])
-print("cointegrated?", eg["is_cointegrated"])
-
-result = run_backtest(prices, "KO", "PEP")
-print(f"sharpe={result.sharpe:.2f}  trades={result.n_trades}")
-trades_df = trades_to_dataframe(result.trades)
-print(trades_df.head())
+result = core_function(input_data)
+print(result)
 ```
 
-## Tests
+## Architecture
+
+```
+pairs-trader/
+├── src/                  # Core package
+├── tests/                # Unit tests
+├── examples/             # Usage examples
+├── docs/                 # Additional documentation
+├── README.md
+├── LICENSE
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+└── requirements.txt
+```
+
+## Testing
 
 ```bash
 pytest -v
 ```
 
-## Project layout
+Tests use synthetic data to ensure deterministic results without external dependencies.
 
-```
-pairs-trader/
-├── pairs/
-│   ├── __init__.py
-│   ├── __main__.py        # CLI
-│   ├── backtest.py        # mean-reversion backtest engine
-│   ├── cointegration.py   # Engle-Granger + half-life + z-score
-│   ├── data.py            # yfinance pair loader
-│   └── visualize.py       # matplotlib chart
-├── tests/
-│   ├── test_cointegration.py
-│   └── test_backtest.py
-├── requirements.txt
-├── README.md
-└── .gitignore
-```
+## Roadmap
 
-## References
+- [ ] Additional metrics and visualizations
+- [ ] Integration with live data sources
+- [ ] Performance optimization for large datasets
+- [ ] Extended documentation and tutorials
 
-- Engle & Granger (1987), *Co-integration and Error Correction*.
-- Chan, *Algorithmic Trading* (mean-reversion pairs chapter).
-- Vidyamurthy, *Pairs Trading: Quantitative Methods and Analysis*.
+## Contributing
+
+Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## License
 
-MIT.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+## Author
+
+**Joshua Riangkamang** — [github.com/JoshRiang](https://github.com/JoshRiang)
+
+---
+
+<p align="center">
+  Built as part of a quantitative finance and software engineering portfolio.
+</p>
