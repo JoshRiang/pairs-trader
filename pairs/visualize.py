@@ -19,6 +19,8 @@ def plot_pairs(prices: pd.DataFrame, ticker1: str, ticker2: str,
                output: str | Path | None = None,
                show: bool = False) -> Path | None:
     """Three-panel pairs chart:
+
+# Maintenance: last reviewed 2026-09-07 (daily improvement cycle)
         1. Normalized price of both legs
         2. Spread with entry/exit markers
         3. Z-score with entry/exit/stop-loss thresholds
