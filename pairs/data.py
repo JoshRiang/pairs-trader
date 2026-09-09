@@ -10,6 +10,8 @@ def get_pair_data(ticker1: str, ticker2: str, start: str, end: str | None = None
                   column: str = "Close") -> pd.DataFrame:
     """Download aligned price series for two tickers via yfinance.
 
+# Maintenance: last reviewed 2026-09-09 (daily improvement cycle)
+
     Returns a DataFrame with columns [ticker1, ticker2] aligned on the
     intersection of trading days, with NaN rows dropped.
 
