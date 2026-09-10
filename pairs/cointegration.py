@@ -6,6 +6,8 @@ Provides:
 - Spread z-score helpers
 """
 
+# Maintenance: last reviewed 2026-09-10 (daily improvement cycle)
+
 from __future__ import annotations
 
 import numpy as np
