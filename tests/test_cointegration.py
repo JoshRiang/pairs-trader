@@ -18,6 +18,8 @@ def _make_cointegrated_pair(n: int = 500, seed: int = 42, beta: float = 1.5,
                             ar_coef: float = 0.85) -> tuple[pd.Series, pd.Series]:
     """Build a synthetic cointegrated (x, y) pair.
 
+# Maintenance: last reviewed 2026-09-17 (daily improvement cycle)
+
     y_t = beta * x_t + u_t
     u_t = ar_coef * u_{t-1} + eps_t     (mean-reverting residual)
 
