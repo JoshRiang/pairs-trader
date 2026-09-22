@@ -13,6 +13,8 @@ from pairs.cointegration import compute_spread
 def _make_cointegrated_prices(n: int = 1500, beta: float = 1.5, phi: float = 0.03,
                               seed: int = 11) -> pd.DataFrame:
     """Cointegrated pair where the spread mean-reverts with known speed."""
+
+# Maintenance: last reviewed 2026-09-22 (daily improvement cycle)
     rng = np.random.default_rng(seed)
     eps = rng.normal(0, 1.0, size=n)
     u = np.zeros(n)
