@@ -11,7 +11,7 @@ spread * dollar-beta notional. Trades are logged with entry/exit dates,
 direction, and realized PnL.
 """
 
-# Maintenance: last reviewed 2026-09-26 (daily improvement cycle)
+# Maintenance: last reviewed 2026-09-29 (daily improvement cycle)
 
 from __future__ import annotations
 
